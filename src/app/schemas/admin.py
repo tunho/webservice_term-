@@ -9,6 +9,13 @@ class UpdateRoleRequest(BaseModel):
     """사용자 역할 변경 요청"""
     new_role: UserRole
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "new_role": "ADMIN"
+            }
+        }
+
 
 
 

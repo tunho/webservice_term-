@@ -21,6 +21,18 @@ class TaskCreate(TaskBase):
     """작업 생성 요청"""
     calendar_id: str = Field(..., description="캘린더 ID")
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "calendar_id": "uuid-of-calendar",
+                "title": "Finish Report",
+                "description": "Complete the quarterly report",
+                "due_at": "2025-12-31T18:00:00Z",
+                "status": "PENDING",
+                "priority": "HIGH"
+            }
+        }
+
 
 class TaskUpdate(BaseModel):
     """작업 수정 요청"""
@@ -29,6 +41,15 @@ class TaskUpdate(BaseModel):
     due_at: Optional[datetime] = None
     status: Optional[TaskStatus] = None
     priority: Optional[str] = Field(None, pattern="^(LOW|MEDIUM|HIGH)$")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Finish Report - Urgent",
+                "priority": "HIGH",
+                "status": "IN_PROGRESS"
+            }
+        }
 
 
 class TaskResponse(TaskBase):

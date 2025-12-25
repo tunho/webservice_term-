@@ -12,11 +12,28 @@ class SignupRequest(BaseModel):
     password: str = Field(..., min_length=8, description="최소 8자 이상")
     display_name: Optional[str] = None
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "new_user@example.com",
+                "password": "password123",
+                "display_name": "New User"
+            }
+        }
+
 
 class LoginRequest(BaseModel):
     """로그인 요청"""
     email: EmailStr
     password: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "user@example.com",
+                "password": "password123"
+            }
+        }
 
 
 class TokenResponse(BaseModel):

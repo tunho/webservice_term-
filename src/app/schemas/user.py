@@ -24,6 +24,13 @@ class UserUpdate(BaseModel):
     display_name: Optional[str] = None
     email: Optional[EmailStr] = None
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "display_name": "Updated Name"
+            }
+        }
+
 
 class UserResponse(UserBase):
     """사용자 응답"""
@@ -56,10 +63,24 @@ class UserBanRequest(BaseModel):
     """사용자 차단 요청"""
     reason: Optional[str] = Field(None, max_length=500, description="차단 사유")
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "reason": "Violation of terms"
+            }
+        }
+
 
 class UserDeactivateRequest(BaseModel):
     """사용자 비활성화 요청"""
     reason: Optional[str] = Field(None, max_length=500, description="비활성화 사유")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "reason": "User requested deactivation"
+            }
+        }
 
 
 

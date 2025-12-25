@@ -21,6 +21,19 @@ class EventCreate(EventBase):
     """이벤트 생성 요청"""
     calendar_id: str = Field(..., description="캘린더 ID")
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "calendar_id": "uuid-of-calendar",
+                "title": "Team Meeting",
+                "description": "Weekly sync meeting",
+                "start_at": "2025-12-25T10:00:00Z",
+                "end_at": "2025-12-25T11:00:00Z",
+                "location": "Conference Room A",
+                "is_all_day": False
+            }
+        }
+
 
 class EventUpdate(BaseModel):
     """이벤트 수정 요청"""
@@ -30,6 +43,15 @@ class EventUpdate(BaseModel):
     end_at: Optional[datetime] = None
     location: Optional[str] = Field(None, max_length=500)
     is_all_day: Optional[bool] = None
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Rescheduled Meeting",
+                "start_at": "2025-12-25T14:00:00Z",
+                "end_at": "2025-12-25T15:00:00Z"
+            }
+        }
 
 
 class EventResponse(EventBase):

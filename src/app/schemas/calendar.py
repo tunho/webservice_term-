@@ -16,7 +16,14 @@ class CalendarBase(BaseModel):
 
 class CalendarCreate(CalendarBase):
     """캘린더 생성 요청"""
-    pass
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "My Work Calendar",
+                "description": "For work related events",
+                "color": "#4287f5"
+            }
+        }
 
 
 class CalendarUpdate(BaseModel):
@@ -24,6 +31,15 @@ class CalendarUpdate(BaseModel):
     title: Optional[str] = Field(None, max_length=255)
     description: Optional[str] = Field(None, max_length=1000)
     color: Optional[str] = Field(None, pattern="^#[0-9A-Fa-f]{6}$")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Updated Calendar Title",
+                "description": "Updated description",
+                "color": "#ff0000"
+            }
+        }
 
 
 class CalendarResponse(CalendarBase):
