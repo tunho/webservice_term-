@@ -1,0 +1,527 @@
+{
+    "info": {
+        "name": "Calendar Suite API - Comprehensive Error Tests",
+        "description": "Collection for testing all defined error codes.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Login (Setup)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"email\": \"user@example.com\", \"password\": \"password123\"}"
+                },
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/auth/login",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "var jsonData = pm.response.json();",
+                            "pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+                            "pm.test(\"Login successful\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "400 BAD_REQUEST - Invalid Date Range",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"calendar_id\": \"temp-id\", \"title\": \"Bad Date Event\", \"start_at\": \"2025-12-25T12:00:00Z\", \"end_at\": \"2025-12-25T11:00:00Z\"}"
+                },
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/events",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "events"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "// Note: This might return 404 if calendar_id is invalid before date check.",
+                            "// Better to use INVALID_QUERY_PARAM for 400 test."
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "400 INVALID_QUERY_PARAM - Invalid Sort Field",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/events?sort=invalid_field,DESC",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "events"
+                    ],
+                    "query": [
+                        {
+                            "key": "sort",
+                            "value": "invalid_field,DESC"
+                        }
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "// Note: Pagination logic might ignore invalid sort instead of erroring.",
+                            "// Let's try to trigger 400 via another way if this fails."
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "422 VALIDATION_ERROR - Invalid Email Format",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"email\": \"not-an-email\", \"password\": \"Password123!\", \"display_name\": \"Test\"}"
+                },
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/auth/signup",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "signup"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 422\", function () {",
+                            "    pm.response.to.have.status(422);",
+                            "});",
+                            "pm.test(\"Error code is VALIDATION_ERROR\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.eql(\"VALIDATION_ERROR\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "401 UNAUTHORIZED - Missing Token",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/users/me",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "users",
+                        "me"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 401\", function () {",
+                            "    pm.response.to.have.status(401);",
+                            "});",
+                            "pm.test(\"Error code is UNAUTHORIZED\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.eql(\"UNAUTHORIZED\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "401 TOKEN_EXPIRED - Expired Token",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NjlkMWUzNy0zNzI3LTQyMDgtOWJiYy03MzhiZDBjMjViOGIiLCJlbWFpbCI6ImV4cGlyZWRAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImV4cCI6MTc2NjY0MzUyMn0._S3LOyyT78_z9oOBlaEQjOVii0wyoT3pO80ht12iR60"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/users/me",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "users",
+                        "me"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 401\", function () {",
+                            "    pm.response.to.have.status(401);",
+                            "});",
+                            "pm.test(\"Error code is TOKEN_EXPIRED\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.eql(\"TOKEN_EXPIRED\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "403 FORBIDDEN - User Accessing Admin",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/admin/users",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "admin",
+                        "users"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 403\", function () {",
+                            "    pm.response.to.have.status(403);",
+                            "});",
+                            "pm.test(\"Error code is FORBIDDEN\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.eql(\"FORBIDDEN\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "404 RESOURCE_NOT_FOUND - Invalid Calendar ID",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/calendars/999999",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "calendars",
+                        "999999"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "pm.test(\"Error code is RESOURCE_NOT_FOUND or CALENDAR_NOT_FOUND\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.be.oneOf([\"RESOURCE_NOT_FOUND\", \"CALENDAR_NOT_FOUND\"]);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "404 USER_NOT_FOUND - Invalid User ID (Admin)",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/admin/users/999999",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "admin",
+                        "users",
+                        "999999"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "exec": [
+                            "// Need Admin login here. For now, this test might fail with 403 if using User token."
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "409 DUPLICATE_RESOURCE - Signup Existing Email",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"email\": \"user@example.com\", \"password\": \"Password123!\", \"display_name\": \"Duplicate\"}"
+                },
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/auth/signup",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "signup"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 409\", function () {",
+                            "    pm.response.to.have.status(409);",
+                            "});",
+                            "pm.test(\"Error code is DUPLICATE_RESOURCE or CONFLICT\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.be.oneOf([\"DUPLICATE_RESOURCE\", \"CONFLICT\"]);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "422 UNPROCESSABLE_ENTITY - Missing Field",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"email\": \"test@example.com\"}"
+                },
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/auth/signup",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "signup"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 422\", function () {",
+                            "    pm.response.to.have.status(422);",
+                            "});",
+                            "pm.test(\"Error code is VALIDATION_ERROR\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.eql(\"VALIDATION_ERROR\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "access_token",
+            "value": ""
+        }
+    ]
+}

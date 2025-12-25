@@ -57,6 +57,14 @@
    ✨ All automated tests completed successfully!
    ```
 
+### 5. Postman API 테스트 (권장)
+제출된 `postman/Calendar_Suite.postman_collection.json` 파일을 사용하여 API를 테스트할 수 있습니다.
+
+1. **Import**: Postman 실행 -> `Import` 버튼 클릭 -> 파일 선택
+2. **환경 설정**:
+   - 별도의 Environment 설정이 필요 없습니다. (Collection 내부에 `http://113.198.66.68:10184` 주소가 설정되어 있음)
+   - 로그인(Signup/Login) API를 실행하면 `access_token`이 자동으로 변수에 저장되어, 이후 요청에서 인증이 자동 처리됩니다.
+
 ### 로컬 실행 (개발용)
 ```bash
 # 가상환경 생성 및 활성화

@@ -1,0 +1,44 @@
+# Server Configuration
+ENV=production
+DEBUG=false
+PROJECT_NAME="Calendar Suite"
+VERSION=0.1.0
+API_V1_STR=/api/v1
+
+# Database (MySQL) - JCloud DB Info
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_USER=calendar_user
+MYSQL_PASSWORD=calendar_password
+MYSQL_DB=calendar_suite
+
+# Redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+# Security & Auth
+JWT_SECRET=your-super-secret-key-change-in-production
+JWT_ALGORITHM=HS256
+JWT_ACCESS_EXPIRES_MIN=30
+JWT_REFRESH_EXPIRES_DAYS=7
+
+# Firebase (Service Account Key Path)
+FIREBASE_SERVICE_ACCOUNT_JSON=/app/firebase_key.json
+FIREBASE_PROJECT_ID=calendar-suite
+
+# Google OAuth
+GOOGLE_OAUTH_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+GOOGLE_OAUTH_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
+GOOGLE_OAUTH_REDIRECT_URI=http://113.198.66.68.nip.io:10184/api/v1/auth/google/callback
+
+# CORS (Allow Frontend)
+CORS_ORIGINS=["http://localhost:5173","http://113.198.66.68:10184","http://113.198.66.68.nip.io:10184"]
+
+# Frontend Configuration (Reference)
+VITE_FIREBASE_API_KEY=AIzaSyDIcpOO1G1pTtcM9AAkdI2cCo28_z6U424
+VITE_FIREBASE_AUTH_DOMAIN=calendar-suite.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=calendar-suite
+VITE_FIREBASE_STORAGE_BUCKET=calendar-suite.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=89088179870
+VITE_FIREBASE_APP_ID="1:89088179870:web:3c3bb02a26acc9bba3858f"
+VITE_API_BASE_URL=http://113.198.66.68:10184
