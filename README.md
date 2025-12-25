@@ -41,7 +41,16 @@
    - Health Check: `http://localhost:8080/health`
    - Swagger UI: `http://localhost:8080/docs`
 
-5. API 검증 (Postman 대안)
+6. API 검증
+   
+   **방법 A: Postman API 테스트 (권장)**
+   제출된 `postman/Calendar_Suite_API.postman_collection.json` 파일을 사용하여 API를 테스트할 수 있습니다.
+   
+   1. **Import**: Postman 실행 -> Import 버튼 클릭 -> 파일 선택
+   2. **환경 설정**: 별도의 Environment 설정이 필요 없습니다. (Collection 내부에 `http://113.198.66.68:10184` 주소가 설정되어 있음)
+   3. **실행**: `Login (Setup)` 요청을 먼저 실행하면 `access_token`이 자동으로 변수에 저장되어, 이후 요청에서 인증이 자동 처리됩니다.
+
+   **방법 B: Python 스크립트 (Postman 대안)**
    Postman 클라이언트 설정 문제로 실행이 어려울 경우, 제공된 Python 스크립트로 전체 API 기능을 검증할 수 있습니다.
    ```bash
    # 서버 컨테이너 내부에서 실행
@@ -50,20 +59,11 @@
    **실행 결과 예시:**
    ```
    [SUCCESS] Health Check passed
-   [SUCCESS] Signup passed
    [SUCCESS] Login passed
-   [SUCCESS] Create/Delete Calendar passed
+   [SUCCESS] Get Calendars passed (Found 41 calendars)
    ...
    ✨ All automated tests completed successfully!
    ```
-
-### 5. Postman API 테스트 (권장)
-제출된 `postman/Calendar_Suite.postman_collection.json` 파일을 사용하여 API를 테스트할 수 있습니다.
-
-1. **Import**: Postman 실행 -> `Import` 버튼 클릭 -> 파일 선택
-2. **환경 설정**:
-   - 별도의 Environment 설정이 필요 없습니다. (Collection 내부에 `http://113.198.66.68:10184` 주소가 설정되어 있음)
-   - 로그인(Signup/Login) API를 실행하면 `access_token`이 자동으로 변수에 저장되어, 이후 요청에서 인증이 자동 처리됩니다.
 
 ### 로컬 실행 (개발용)
 ```bash
