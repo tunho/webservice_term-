@@ -136,9 +136,9 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 
 ## 6. DB 연결 정보 (테스트용)
 - **Host**: `113.198.66.68`
-- **Port**: `3307` (외부 노출 포트)
+- **Port**: `3306` (외부 노출 포트)
 - **Database**: `calendar_suite`
-- **User**: `calendar_user`
+- **User**: `calendar_user` (모든 권한: Read/Write)
 - **Password**: `calendar_password`
 
 ---
