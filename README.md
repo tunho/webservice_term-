@@ -44,9 +44,11 @@
 6. API 검증
    
    **방법 A: Postman API 테스트 (권장)**
-   제출된 `postman/Calendar_Suite_API.postman_collection.json` 파일을 사용하여 API를 테스트할 수 있습니다.
+   제출된 다음 두 파일을 사용하여 API를 테스트할 수 있습니다.
+   - **메인 API**: `postman/Calendar_Suite_API.postman_collection.json`
+   - **에러 테스트**: `postman/Calendar_Suite_Error_Tests.postman_collection.json`
    
-   1. **Import**: Postman 실행 -> Import 버튼 클릭 -> 파일 선택
+   1. **Import**: Postman 실행 -> Import 버튼 클릭 -> 두 파일 모두 선택
    2. **환경 설정**: 별도의 Environment 설정이 필요 없습니다. (Collection 내부에 `http://113.198.66.68:10184` 주소가 설정되어 있음)
    3. **실행**: `Login (Setup)` 요청을 먼저 실행하면 `access_token`이 자동으로 변수에 저장되어, 이후 요청에서 인증이 자동 처리됩니다.
 
