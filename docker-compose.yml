@@ -46,7 +46,6 @@ services:
       - env_prod.txt
     environment:
       APP_PORT: ${APP_PORT:-8080}
-      PYTHONPATH: /app/src
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_DB: ${MYSQL_DB:-calendar_suite}
@@ -61,6 +60,7 @@ services:
       PORT: ${APP_PORT:-8080}
       DEBUG: ${DEBUG:-false}
       CORS_ORIGINS: "${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}"
+      OAUTHLIB_INSECURE_TRANSPORT: "1"
     ports:
       - "${APP_PORT:-8080}:8080"
     depends_on:
