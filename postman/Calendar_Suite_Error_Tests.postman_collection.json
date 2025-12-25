@@ -1,7 +1,7 @@
 {
     "info": {
-        "name": "Calendar Suite Error Tests (Final v4)",
-        "description": "Comprehensive error tests covering 13+ scenarios. Uses fixed calendar ID for robustness.",
+        "name": "Calendar Suite Error Tests (Final v5)",
+        "description": "Comprehensive error tests covering 14+ scenarios (12 errors + 2 setups).",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -263,7 +263,7 @@
                 "header": [
                     {
                         "key": "Authorization",
-                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMWNkYWFhOC1lZGFlLTQ5YTItOTcyOS1jOWJjYzRlODU5NDYiLCJlbWFpbCI6ImV4cGlyZWRAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImV4cCI6MTc2NjY0NTI0MH0.DT_CnXj3M2fAuaBo0Emo2Guza7q2spwUuLcHgm9QDzU"
+                        "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNGJjMzA4OC0yY2MwLTRhMmQtODM4ZC01NGQxMDI0OTYyY2EiLCJlbWFpbCI6ImV4cGlyZWRAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImV4cCI6MTc2NjY0NTQ5NX0.GVgaFoplgNBinUhA5OWEsJrKRFpUmYZAQPgdCY7mho0"
                     }
                 ],
                 "url": {
@@ -625,6 +625,52 @@
                             "pm.test(\"Error code is VALIDATION_ERROR\", function () {",
                             "    var jsonData = pm.response.json();",
                             "    pm.expect(jsonData.code).to.eql(\"VALIDATION_ERROR\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "14. 401 UNAUTHORIZED - Malformed Token",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer invalid-token-string"
+                    }
+                ],
+                "url": {
+                    "raw": "http://113.198.66.68:10184/api/v1/users/me",
+                    "protocol": "http",
+                    "host": [
+                        "113",
+                        "198",
+                        "66",
+                        "68"
+                    ],
+                    "port": "10184",
+                    "path": [
+                        "api",
+                        "v1",
+                        "users",
+                        "me"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 401\", function () {",
+                            "    pm.response.to.have.status(401);",
+                            "});",
+                            "pm.test(\"Error code is UNAUTHORIZED or INVALID_TOKEN\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.code).to.be.oneOf([\"UNAUTHORIZED\", \"INVALID_TOKEN\"]);",
                             "});"
                         ],
                         "type": "text/javascript"
