@@ -21,7 +21,7 @@
 ### Docker 실행 (권장)
 1. 레포지토리 클론 및 이동
    ```bash
-   git clone <REPO_URL>
+   git clone https://github.com/tunho/webservice_term-.git
    cd server
    ```
 2. 환경변수 설정
@@ -76,11 +76,12 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 # 의존성 설치
 pip install -r requirements.txt
 
-# DB 마이그레이션
+# DB 마이그레이션 및 시드 데이터 생성
 alembic upgrade head
+# (선택) 시드 데이터 생성: python scripts/seed.py
 
 # 서버 실행
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
+uvicorn app.main:app --host 0.0.0.0 --port 8080
 ```
 
 ---
