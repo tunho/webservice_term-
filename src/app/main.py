@@ -89,7 +89,12 @@ app.add_middleware(LoggingMiddleware)
 
 # Session Middleware (Required for Google OAuth)
 from starlette.middleware.sessions import SessionMiddleware
-app.add_middleware(SessionMiddleware, secret_key=settings.JWT_SECRET)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.JWT_SECRET,
+    https_only=False,
+    same_site="lax"
+)
 
 # ✅ CORS는 반드시 마지막에 추가 (outermost)
 app.add_middleware(
